@@ -11,70 +11,40 @@ type ListNode struct {
 }
 
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
-	var quotient int = 0
-	var index int = 0
-	total := &ListNode{}
-	var previousNode *ListNode
+	var carry int = 0
+	var aux *ListNode = &ListNode{}
+	total := aux
 
 	var tmpL1 = l1
 	var tmpL2 = l2
 
 	for tmpL1 != nil || tmpL2 != nil {
 
-		var val1 = 0
-		var val2 = 0
+		var sum = carry
 
 		if tmpL1 != nil {
-			val1 = tmpL1.Val
+			sum += tmpL1.Val
+			tmpL1 = tmpL1.Next
 		}
 
 		if tmpL2 != nil {
-			val2 = tmpL2.Val
-		}
-
-		sum := val1 + val2 + quotient
-		totalValue := sum % 10
-		quotient = sum / 10
-
-		if tmpL1 != nil && tmpL1.Next != nil {
-			tmpL1 = tmpL1.Next
-		} else {
-			tmpL1 = nil
-		}
-
-		if tmpL2 != nil && tmpL2.Next != nil {
+			sum += tmpL2.Val
 			tmpL2 = tmpL2.Next
-		} else {
-			tmpL2 = nil
 		}
 
-		if index == 0 {
-			total.Val = totalValue
-			total.Next = nil
-			previousNode = total
-			index++
-			continue
-		}
+		totalValue := sum % 10
+		carry = sum / 10
 
-		currentNode := &ListNode{
+		aux.Next = &ListNode{
 			Val:  totalValue,
 			Next: nil,
 		}
 
-		previousNode.Next = currentNode
-		previousNode = currentNode
+		aux = aux.Next
 
-		index++
 	}
 
-	if quotient > 0 {
-		previousNode.Next = &ListNode{
-			Val:  quotient,
-			Next: nil,
-		}
-	}
-
-	return total
+	return total.Next
 
 }
 
